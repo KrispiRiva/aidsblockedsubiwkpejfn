@@ -3,7 +3,7 @@ name: Run Convert to Hosts Script
 on:
   push:
     branches:
-      - main  # Change this to your default branch if necessary
+      - main  # Ensure this matches your default branch
   workflow_dispatch:  # Allows manual trigger of the workflow
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.13'  # Specify the Python version you need
+        python-version: '3.13'  # Use a stable version like 3.9, 3.10, or 3.11
 
     - name: Install Requests Module
       run: |
@@ -26,6 +26,16 @@ jobs:
 
     - name: Run Convert to Hosts Script
       run: python convert_to_hosts.py  # Execute your Python script
+
+    - name: Commit and Push hosts.txt
+      run: |
+        git config --local user.email "krispiriva@toke.com"  # Replace with your email
+        git config --local user.name "KrispiRiva"  # Replace with your name
+        git add hosts.txt
+        git commit -m "Update hosts.txt" || echo "No changes to commit"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided by GitHub Actions
 
     - name: Upload Hosts File
       uses: actions/upload-artifact@v4
