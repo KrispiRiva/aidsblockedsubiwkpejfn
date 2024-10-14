@@ -5,6 +5,8 @@ on:
     branches:
       - main  # Ensure this matches your default branch
   workflow_dispatch:  # Allows manual trigger of the workflow
+  schedule:
+    - cron: '0 0 * * *'  # This schedules the workflow to run at 12:00 AM UTC every day
 
 jobs:
   run-script:
